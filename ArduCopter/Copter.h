@@ -209,6 +209,7 @@ public:
     friend class ModeBrake;
     friend class ModeCircle;
     friend class ModeDrift;
+    friend class ModeDrive;
     friend class ModeFlip;
     friend class ModeFlowHold;
     friend class ModeFollow;
@@ -1023,6 +1024,7 @@ private:
     ModeStabilize_Heli mode_stabilize;
 #else
     ModeStabilize mode_stabilize;
+    ModeDrive mode_drive;
 #endif
 #if MODE_SPORT_ENABLED == ENABLED
     ModeSport mode_sport;

@@ -1,8 +1,28 @@
-#include "Copter.h"
 
+#include "Copter.h"
+#include <AP_Motors/AP_Motors_Class.h>
+#include <AP_Motors/AP_Motors.h>
+#include <AP_Motors/AP_MotorsMatrix.h>
+/*
+ * Init and run calls for stabilize flight mode
+ */
+
+bool ModeDrive::init(bool ignore_checks)
+{
+    AP_MotorsMatrix* _singleton = AP_MotorsMatrix::get_singleton();
+    prevMotorFrame = _singleton->get_active_frame_class();
+    prevMotorType = _singleton->get_active_frame_type();
+    _singleton->setup_motors(AP_Motors::motor_frame_class::MOTOR_FRAME_QUAD, AP_Motors::motor_frame_type::MOTOR_FRAME_TYPE_PLUS);
+    return true;
+}
+void ModeDrive::exit()
+{
+    AP_MotorsMatrix* _singleton = AP_MotorsMatrix::get_singleton();
+    _singleton->setup_motors(prevMotorFrame, prevMotorType);
+}
 // stabilize_run - runs the main stabilize controller
 // should be called at 100hz or more
-void ModeStabilize::run()
+void ModeDrive::run()
 {
     // apply simple mode transform to pilot inputs
     update_simple_mode();
